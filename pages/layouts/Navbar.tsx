@@ -77,7 +77,7 @@ export default function BasicTabs() {
                 fontSize: "13px",
               }}
             >
-              Contained
+              Add New User
             </Button>
           </Container>
         </Box>
