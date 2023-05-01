@@ -1,11 +1,23 @@
 import * as React from "react";
+import { useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { AppBar, Button, Container, Grid, IconButton } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import {
+  AppBar,
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  Input,
+  InputAdornment,
+  TextField,
+} from "@mui/material";
 import icon from "@/public/Users.png";
-import BsPlusCircleFill from "react-icons/bs";
+import { BsPlusCircleFill } from "react-icons/bs";
+import { Search } from "@mui/icons-material";
 
 const styles = {
   tab: {
@@ -39,11 +51,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -57,13 +65,16 @@ function a11yProps(index: number) {
 
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handletabsChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  const deneme: any = () => {
-    console.log("deneme");
-  };
+
   return (
     <>
       <AppBar
@@ -73,7 +84,7 @@ export default function BasicTabs() {
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Grid container sx={{ paddingX: "1rem" }}>
             <Grid
-              xs
+              xs={2}
               sx={{ display: "flex", alignItems: "center", gap: "10px" }}
             >
               <Button
@@ -97,46 +108,81 @@ export default function BasicTabs() {
                 Users
               </Typography>
             </Grid>
-            <Grid xs={10} sx={{ display: "flex", justifyContent: "center" }}>
+            <Grid xs={8} sx={{ display: "flex", justifyContent: "center" }}>
               {" "}
               <Tabs
                 value={value}
-                onChange={handleChange}
+                onChange={handletabsChange}
                 aria-label="basic tabs example"
               >
                 {headerData.map((item, index) => {
                   return (
-                    <Tab
-                      label={item}
-                      {...a11yProps(index)}
-                      sx={styles.tab}
-                      onClick={deneme}
-                    />
+                    <Tab label={item} {...a11yProps(index)} sx={styles.tab} />
                   );
                 })}
               </Tabs>
             </Grid>
             <Grid
-              xs
+              xs={2}
               sx={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "end",
               }}
             >
-              <Button variant="contained" sx={styles.tab} size="medium">
+              <Button
+                variant="contained"
+                sx={{
+                  fontSize: "13px",
+                  fontWeight: "600",
+                  textTransform: "capitalize",
+                  gap: "10px",
+                }}
+              >
+                <BsPlusCircleFill />
                 Add New User
               </Button>
             </Grid>
           </Grid>
         </Box>
       </AppBar>
+      <Container maxWidth="xl" sx={{ paddingY: "1rem" }}>
+        <Box sx={{ display: "flex ", alignItems: "center", gap: " 10px " }}>
+          {" "}
+          <SearchIcon />
+          <TextField
+            id="search"
+            variant="standard"
+            type="search"
+            value={searchTerm}
+            onChange={handleChange}
+            InputProps={{
+              disableUnderline: true,
+              style: { border: "none" },
+            }}
+            placeholder="Search"
+          />
+        </Box>
 
-      <TabPanel value={value} index={0}></TabPanel>
+        <TabPanel value={value} index={0}>
+          <Typography variant="h6" component="div">
+            Item One
+          </Typography>
+        </TabPanel>
 
-      <TabPanel value={value} index={1}>
-        dsas
-      </TabPanel>
+        <TabPanel value={value} index={1}>
+          dsas1
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          dsas2
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          dsas3
+        </TabPanel>
+        <TabPanel value={value} index={4}>
+          dsas4
+        </TabPanel>
+      </Container>
     </>
   );
 }
