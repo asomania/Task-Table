@@ -16,7 +16,7 @@ const index = ({ data }: { data: any }) => {
   }, []);
   return (
     <>
-      <Navbar />
+      <Navbar data={data} />
     </>
   );
 };

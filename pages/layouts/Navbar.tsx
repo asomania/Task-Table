@@ -64,7 +64,11 @@ function a11yProps(index: number) {
   };
 }
 
-export default function BasicTabs() {
+export default function BasicTabs({ data }: { data: any }) {
+  const [users, setUsers] = useState<User[]>([]);
+  useEffect(() => {
+    setUsers(data);
+  }, []);
   const [value, setValue] = React.useState(0);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -166,7 +170,7 @@ export default function BasicTabs() {
         </Box>
 
         <TabPanel value={value} index={0}>
-          <AllUsers />
+          <AllUsers data={users} />
         </TabPanel>
 
         <TabPanel value={value} index={1}>

@@ -9,13 +9,9 @@ type User = {
   email: string;
 };
 const index = ({ data }: { data: any }) => {
-  const [users, setUsers] = useState<User[]>([]);
-  useEffect(() => {
-    setUsers(data);
-  }, []);
   return (
     <>
-      {users.map((user) => (
+      {data.map((user: any) => (
         <div key={user.id}>
           <h1>{user.name}</h1>
         </div>
@@ -25,14 +21,3 @@ const index = ({ data }: { data: any }) => {
 };
 
 export default index;
-export async function getServerSideProps() {
-  const response = await fetch(
-    "https://6450be73e1f6f1bb229de7cf.mockapi.io/persons"
-  );
-  const data = await response.json();
-  return {
-    props: {
-      data,
-    },
-  };
-}
