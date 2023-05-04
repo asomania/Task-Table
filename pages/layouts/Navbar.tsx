@@ -27,7 +27,14 @@ const styles = {
     textTransform: "capitalize",
   },
 };
-
+type User = {
+  id: number;
+  name: string;
+  avatar: string;
+  username: string;
+  role: string;
+  email: string;
+};
 const headerData = [
   "All Users",
   "Contributor",
