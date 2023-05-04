@@ -96,6 +96,7 @@ export default function BasicTabs({ data }: { data: any }) {
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Grid container sx={{ paddingX: "1rem" }}>
             <Grid
+              item
               xs={2}
               sx={{ display: "flex", alignItems: "center", gap: "10px" }}
             >
@@ -120,7 +121,11 @@ export default function BasicTabs({ data }: { data: any }) {
                 Users
               </Typography>
             </Grid>
-            <Grid xs={8} sx={{ display: "flex", justifyContent: "center" }}>
+            <Grid
+              item
+              xs={8}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
               {" "}
               <Tabs
                 value={value}
@@ -129,12 +134,18 @@ export default function BasicTabs({ data }: { data: any }) {
               >
                 {headerData.map((item, index) => {
                   return (
-                    <Tab label={item} {...a11yProps(index)} sx={styles.tab} />
+                    <Tab
+                      label={item}
+                      {...a11yProps(index)}
+                      key={index}
+                      sx={styles.tab}
+                    />
                   );
                 })}
               </Tabs>
             </Grid>
             <Grid
+              item
               xs={2}
               sx={{
                 display: "flex",

@@ -1,5 +1,4 @@
 import React from "react";
-import { useState, useEffect } from "react";
 import Navbar from "./layouts/Navbar";
 type User = {
   id: number;
@@ -10,11 +9,7 @@ type User = {
   role: string;
   email: string;
 };
-const index = ({ data }: { data: any }) => {
-  const [users, setUsers] = useState<User[]>([]);
-  useEffect(() => {
-    setUsers(data);
-  }, []);
+const index = ({ data }: { data: User }) => {
   return (
     <>
       <Navbar data={data} />
