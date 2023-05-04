@@ -1,6 +1,5 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import Navbar from "./layouts/Navbar";
 type User = {
   id: number;
   name: string;
@@ -16,7 +15,11 @@ const index = ({ data }: { data: any }) => {
   }, []);
   return (
     <>
-      <Navbar />
+      {users.map((user) => (
+        <div key={user.id}>
+          <h1>{user.name}</h1>
+        </div>
+      ))}
     </>
   );
 };

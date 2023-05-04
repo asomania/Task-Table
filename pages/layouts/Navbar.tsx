@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
@@ -18,6 +18,7 @@ import {
 import icon from "@/public/Users.png";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { Search } from "@mui/icons-material";
+import AllUsers from "../TabViews/AllUsers";
 
 const styles = {
   tab: {
@@ -165,9 +166,7 @@ export default function BasicTabs() {
         </Box>
 
         <TabPanel value={value} index={0}>
-          <Typography variant="h6" component="div">
-            Item One
-          </Typography>
+          <AllUsers />
         </TabPanel>
 
         <TabPanel value={value} index={1}>
@@ -185,4 +184,15 @@ export default function BasicTabs() {
       </Container>
     </>
   );
+}
+export async function getServerSideProps() {
+  const response = await fetch(
+    "https://6450be73e1f6f1bb229de7cf.mockapi.io/persons"
+  );
+  const data = await response.json();
+  return {
+    props: {
+      data,
+    },
+  };
 }
