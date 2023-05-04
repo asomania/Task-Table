@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Navbar from "./layouts/Navbar";
 type User = {
   id: number;
+
   name: string;
   avatar: string;
   username: string;
