@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { Pagination } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-const index = ({ data }: { data: any }) => {
+
+const Index = ({ data }: { data: any }) => {
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(5) as any;
+
   const handleEdit = (id: any) => {
     // Handle edit action here
     console.log(`Edit row with id ${id}`);
@@ -49,21 +54,38 @@ const index = ({ data }: { data: any }) => {
     },
   ];
 
+  const handlePageChange = (event: any, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handlePageSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPageSize(Number(event.target.value));
+    setPage(0);
+  };
+
+  const startIndex = page * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedData = data.slice(startIndex, endIndex);
+
   return (
     <>
       <DataGrid
-        rows={data}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
+        slots={{
+          footer: () => (
+            <Pagination
+              count={Math.ceil(data.length / pageSize) - 1}
+              page={page}
+              onChange={handlePageChange}
+            />
+          ),
         }}
-        pageSizeOptions={[5, 10]}
+        rows={paginatedData}
+        columns={columns}
         checkboxSelection
+        sx={{ border: "none" }}
       />
     </>
   );
 };
 
-export default index;
+export default Index;
