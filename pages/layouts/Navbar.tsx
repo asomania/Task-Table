@@ -19,6 +19,10 @@ import icon from "@/public/Users.png";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { Search } from "@mui/icons-material";
 import AllUsers from "../TabViews/AllUsers";
+import Contributor from "../TabViews/Contributor";
+import Author from "../TabViews/Author";
+import Administator from "../TabViews/Administator";
+import Subscriber from "../TabViews/Subscriber";
 
 const styles = {
   tab: {
@@ -192,16 +196,16 @@ export default function BasicTabs({ data }: { data: any }) {
         </TabPanel>
 
         <TabPanel value={value} index={1}>
-          dsas1
+          <Contributor data={users} />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          dsas2
+          <Author data={users} />
         </TabPanel>
         <TabPanel value={value} index={3}>
-          dsas3
+          <Administator data={users} />
         </TabPanel>
         <TabPanel value={value} index={4}>
-          dsas4
+          <Subscriber data={users} />
         </TabPanel>
       </Container>
     </>

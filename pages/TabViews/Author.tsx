@@ -1,7 +1,6 @@
 import React from "react";
 import DataGrid from "./Components/DataGrid";
-
-const Index = ({ data }: { data: any }) => {
+const Author = ({ data }: { data: any }) => {
   return (
     <>
       <DataGrid data={data} />
@@ -9,4 +8,4 @@ const Index = ({ data }: { data: any }) => {
   );
 };
 
-export default Index;
+export default Author;

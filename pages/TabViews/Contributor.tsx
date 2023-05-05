@@ -1,7 +1,8 @@
 import React from "react";
 import DataGrid from "./Components/DataGrid";
 
-const Index = ({ data }: { data: any }) => {
+const Contributor = ({ data }: { data: any }) => {
+  data = data.filter((item: any) => item.role === "role 1");
   return (
     <>
       <DataGrid data={data} />
@@ -9,4 +10,4 @@ const Index = ({ data }: { data: any }) => {
   );
 };
 
-export default Index;
+export default Contributor;
