@@ -1,34 +1,36 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import SearchIcon from "@mui/icons-material/Search";
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import SearchIcon from '@mui/icons-material/Search';
 import {
   AppBar,
   Button,
   Container,
+  Dialog,
   Grid,
   IconButton,
   Input,
   InputAdornment,
   TextField,
-} from "@mui/material";
-import icon from "@/public/Users.png";
-import { BsPlusCircleFill } from "react-icons/bs";
-import { Search } from "@mui/icons-material";
-import AllUsers from "../TabViews/AllUsers";
-import Contributor from "../TabViews/Contributor";
-import Author from "../TabViews/Author";
-import Administator from "../TabViews/Administator";
-import Subscriber from "../TabViews/Subscriber";
+} from '@mui/material';
+import icon from '@/public/Users.png';
+import { BsPlusCircleFill } from 'react-icons/bs';
+import { Search } from '@mui/icons-material';
+import AllUsers from '../TabViews/AllUsers';
+import Contributor from '../TabViews/Contributor';
+import Author from '../TabViews/Author';
+import Administator from '../TabViews/Administator';
+import Subscriber from '../TabViews/Subscriber';
+import DialogForm from '../TabViews/Components/DialogForm';
 
 const styles = {
   tab: {
-    fontSize: "13px",
-    fontWeight: "600",
-    textTransform: "capitalize",
+    fontSize: '13px',
+    fontWeight: '600',
+    textTransform: 'capitalize',
   },
 };
 type User = {
@@ -39,13 +41,7 @@ type User = {
   role: string;
   email: string;
 };
-const headerData = [
-  "All Users",
-  "Contributor",
-  "Author",
-  "Administator",
-  "Subscriber",
-];
+const headerData = ['All Users', 'Contributor', 'Author', 'Administator', 'Subscriber'];
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -71,17 +67,19 @@ function TabPanel(props: TabPanelProps) {
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
   };
 }
 
 export default function BasicTabs({ data }: { data: any }) {
+  const [dialog, setDialog] = useState<boolean>(false);
+
   const [users, setUsers] = useState<User[]>([]);
   useEffect(() => {
     setUsers(data);
   }, []);
   const [value, setValue] = React.useState(0);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -93,23 +91,16 @@ export default function BasicTabs({ data }: { data: any }) {
 
   return (
     <>
-      <AppBar
-        sx={{ backgroundColor: "White", boxShadow: "none" }}
-        position="static"
-      >
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Grid container sx={{ paddingX: "1rem" }}>
-            <Grid
-              item
-              xs={2}
-              sx={{ display: "flex", alignItems: "center", gap: "10px" }}
-            >
+      <AppBar sx={{ backgroundColor: 'White', boxShadow: 'none' }} position="static">
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Grid container sx={{ paddingX: '1rem' }}>
+            <Grid item xs={2} sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <Button
                 sx={{
-                  backgroundColor: " #D4DBFC",
-                  borderRadius: "8px",
-                  height: "40px",
-                  width: "40px",
+                  backgroundColor: ' #D4DBFC',
+                  borderRadius: '8px',
+                  height: '40px',
+                  width: '40px',
                 }}
                 size="large"
               >
@@ -117,34 +108,19 @@ export default function BasicTabs({ data }: { data: any }) {
               </Button>
               <Typography
                 sx={{
-                  fontSize: "14px",
-                  fontWeight: "600",
-                  color: "Black",
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: 'Black',
                 }}
               >
                 Users
               </Typography>
             </Grid>
-            <Grid
-              item
-              xs={8}
-              sx={{ display: "flex", justifyContent: "center" }}
-            >
-              {" "}
-              <Tabs
-                value={value}
-                onChange={handletabsChange}
-                aria-label="basic tabs example"
-              >
+            <Grid item xs={8} sx={{ display: 'flex', justifyContent: 'center' }}>
+              {' '}
+              <Tabs value={value} onChange={handletabsChange} aria-label="basic tabs example">
                 {headerData.map((item, index) => {
-                  return (
-                    <Tab
-                      label={item}
-                      {...a11yProps(index)}
-                      key={index}
-                      sx={styles.tab}
-                    />
-                  );
+                  return <Tab label={item} {...a11yProps(index)} key={index} sx={styles.tab} />;
                 })}
               </Tabs>
             </Grid>
@@ -152,19 +128,20 @@ export default function BasicTabs({ data }: { data: any }) {
               item
               xs={2}
               sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "end",
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'end',
               }}
             >
               <Button
                 variant="contained"
                 sx={{
-                  fontSize: "13px",
-                  fontWeight: "600",
-                  textTransform: "capitalize",
-                  gap: "10px",
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  textTransform: 'capitalize',
+                  gap: '10px',
                 }}
+                onClick={() => setDialog(true)}
               >
                 <BsPlusCircleFill />
                 Add New User
@@ -173,9 +150,12 @@ export default function BasicTabs({ data }: { data: any }) {
           </Grid>
         </Box>
       </AppBar>
-      <Container maxWidth="xl" sx={{ paddingY: "1rem" }}>
-        <Box sx={{ display: "flex ", alignItems: "center", gap: " 10px " }}>
-          {" "}
+      <Dialog open={dialog}>
+        <DialogForm />
+      </Dialog>
+      <Container maxWidth="xl" sx={{ paddingY: '1rem' }}>
+        <Box sx={{ display: 'flex ', alignItems: 'center', gap: ' 10px ' }}>
+          {' '}
           <SearchIcon />
           <TextField
             id="search"
@@ -185,7 +165,7 @@ export default function BasicTabs({ data }: { data: any }) {
             onChange={handleChange}
             InputProps={{
               disableUnderline: true,
-              style: { border: "none" },
+              style: { border: 'none' },
             }}
             placeholder="Search"
           />
@@ -212,9 +192,7 @@ export default function BasicTabs({ data }: { data: any }) {
   );
 }
 export async function getServerSideProps() {
-  const response = await fetch(
-    "https://6450be73e1f6f1bb229de7cf.mockapi.io/persons"
-  );
+  const response = await fetch('https://6450be73e1f6f1bb229de7cf.mockapi.io/persons');
   const data = await response.json();
   return {
     props: {

@@ -5,7 +5,6 @@ const Index = ({ data }: { data: any }) => {
   return (
     <>
       <DataGrid data={data} />
-      <DialogForm />
     </>
   );
 };

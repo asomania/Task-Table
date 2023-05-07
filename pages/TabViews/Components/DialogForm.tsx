@@ -10,6 +10,9 @@ import {
   Radio,
   FormLabel,
   Button,
+  Grid,
+  Container,
+  Avatar,
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 
@@ -31,7 +34,12 @@ const defaultValues: FormValues = {
   avatar: '',
 };
 
-const avatars = ['/avatar1.png', '/avatar2.png', '/avatar3.png', '/avatar4.png'];
+const avatars = [
+  'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/17.jpg',
+  '/avatar2.png',
+  '/avatar3.png',
+  '/avatar4.png',
+];
 
 export default function Form() {
   const [values, setValues] = useState<FormValues>(defaultValues);
@@ -48,58 +56,108 @@ export default function Form() {
     console.log(values);
     setValues(defaultValues);
   };
+  const [selectedAvatar, setSelectedAvatar] = useState('');
 
+  const handleAvatarChange = (event: SelectChangeEvent<string>) => {
+    setSelectedAvatar(event.target.value as string);
+  };
   return (
     <form onSubmit={handleSubmit}>
-      <TextField
-        label="Full Name"
-        name="fullName"
-        value={values.fullName}
-        onChange={handleChange}
-      />
-
-      <TextField label="Username" name="username" value={values.username} onChange={handleChange} />
-
-      <TextField
-        label="Email"
-        type="email"
-        name="email"
-        value={values.email}
-        onChange={handleChange}
-      />
-
-      <FormControl>
-        <InputLabel id="role-label">Role</InputLabel>
-        <Select
-          labelId="role-label"
-          label="Role"
-          name="role"
-          value={values.role}
-          onChange={handleChange}
-        >
-          <MenuItem value="admin">Admin</MenuItem>
-          <MenuItem value="editor">Editor</MenuItem>
-          <MenuItem value="user">User</MenuItem>
-        </Select>
-      </FormControl>
-
-      <FormControl component="fieldset">
-        <FormLabel component="legend">Avatar</FormLabel>
-        <RadioGroup name="avatar" value={values.avatar} onChange={handleChange}>
-          {avatars.map((avatar) => (
-            <FormControlLabel
-              key={avatar}
-              value={avatar}
-              control={<Radio />}
-              label={<img src={avatar} alt="" width={50} height={50} />}
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Container>
+            <TextField
+              label="Full Name"
+              name="fullName"
+              value={values.fullName}
+              onChange={handleChange}
+              size="small"
+              fullWidth
             />
-          ))}
-        </RadioGroup>
-      </FormControl>
+          </Container>
+        </Grid>
 
-      <Button type="submit" variant="contained">
-        Submit
-      </Button>
+        <Grid item xs={12}>
+          <Container>
+            {' '}
+            <TextField
+              label="Username"
+              name="username"
+              value={values.username}
+              onChange={handleChange}
+              size="small"
+              fullWidth
+            />
+          </Container>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Container>
+            <TextField
+              label="Email"
+              type="email"
+              name="email"
+              value={values.email}
+              onChange={handleChange}
+              size="small"
+              fullWidth
+            />
+          </Container>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Container>
+            {' '}
+            <FormControl fullWidth>
+              <InputLabel id="role-label">Role</InputLabel>
+              <Select
+                labelId="role-label"
+                label="Role"
+                name="role"
+                value={values.role}
+                onChange={handleChange}
+                size="small"
+              >
+                <MenuItem value="admin">Admin</MenuItem>
+                <MenuItem value="editor">Editor</MenuItem>
+                <MenuItem value="user">User</MenuItem>
+              </Select>
+            </FormControl>
+          </Container>
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Avatar Seçin</FormLabel>
+            <RadioGroup name="avatar" value={selectedAvatar} onChange={handleAvatarChange}>
+              {avatars.map((avatar) => (
+                <FormControlLabel
+                  key={avatar}
+                  value={avatar}
+                  control={
+                    <Radio
+                      icon={
+                        <Avatar
+                          sx={{ width: 30, height: 30, borderRadius: '0px' }}
+                          alt={`Avatar ${avatar}`}
+                          src={avatar}
+                        />
+                      }
+                      checkedIcon={
+                        <Avatar
+                          sx={{ width: 30, height: 30, borderRadius: '0px' }}
+                          alt={`Avatar ${avatar}`}
+                          src={avatar}
+                        />
+                      }
+                    />
+                  }
+                  label=""
+                />
+              ))}
+            </RadioGroup>
+          </FormControl>
+        </Grid>
+      </Grid>
     </form>
   );
 }
