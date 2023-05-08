@@ -15,6 +15,7 @@ import {
   Avatar,
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
+import { useRouter } from 'next/router';
 
 type Role = 'Contributor' | 'Author' | 'Administrator' | 'Subscriber';
 
@@ -71,6 +72,8 @@ export default function Form({ editValues }: { editValues: any }) {
   const handleAvatarChange = (event: SelectChangeEvent<string>) => {
     setSelectedAvatar(event.target.value as string);
   };
+  const router = useRouter();
+
   const personSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     console.log(values);
@@ -98,7 +101,7 @@ export default function Form({ editValues }: { editValues: any }) {
         .catch((error) => {
           console.error('Error:', error);
         });
-      window.location.reload();
+      router.reload();
     } else {
       // Kullanıcıyı düzenle
       const editData = async (url: string, data: any) => {
@@ -119,7 +122,7 @@ export default function Form({ editValues }: { editValues: any }) {
         .catch((error) => {
           console.error('Error:', error);
         });
-      window.location.reload();
+      router.reload();
     }
   };
   return (
