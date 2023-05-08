@@ -1,10 +1,13 @@
-import React from "react";
-import DataGrid from "./Components/DataGrid";
+import React from 'react';
+import { useState } from 'react';
+import DataGrid from './Components/DataGrid';
 const Administator = ({ data }: { data: any }) => {
-  data = data.filter((item: any) => item.role === "Administator");
+  const [newData, setNewData] = useState();
+
+  setNewData(data.filter((item: any) => item.role === 'Administator'));
   return (
     <>
-      <DataGrid data={data} />
+      <DataGrid data={newData} />
     </>
   );
 };

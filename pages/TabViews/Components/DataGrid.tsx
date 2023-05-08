@@ -69,6 +69,11 @@ const Index = ({ data }: { data: any }) => {
       ),
     },
   ];
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
 
   const startIndex = page * pageSize;
   const endIndex = startIndex + pageSize;
@@ -85,8 +90,8 @@ const Index = ({ data }: { data: any }) => {
           id="search"
           variant="standard"
           type="search"
-          // value={searchTerm}
-          // onChange={handleChange}
+          value={searchTerm}
+          onChange={handleChange}
           InputProps={{
             disableUnderline: true,
             style: { border: 'none' },
