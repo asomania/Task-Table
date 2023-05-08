@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   TextField,
   Select,
@@ -19,6 +19,7 @@ import { SelectChangeEvent } from '@mui/material/Select';
 type Role = 'Contributor' | 'Author' | 'Administator' | 'Subscriber';
 
 interface FormValues {
+  id: number;
   name: string;
   username: string;
   email: string;
@@ -27,6 +28,7 @@ interface FormValues {
 }
 
 const defaultValues: FormValues = {
+  id: 0,
   name: '',
   username: '',
   email: '',
@@ -43,8 +45,13 @@ const avatars = [
   'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/77.jpg',
 ];
 
-export default function Form() {
+export default function Form({ editValues }: { editValues: any }) {
   const [values, setValues] = useState<FormValues>(defaultValues);
+  useEffect(() => {
+    if (editValues !== null) {
+      setValues(editValues);
+    }
+  }, [editValues]);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent
@@ -68,24 +75,52 @@ export default function Form() {
     event.preventDefault();
     console.log(values);
     values.avatar = selectedAvatar;
-    setValues(defaultValues);
-    async function postData(url = '', data = {}) {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      return response.json();
+
+    //if values == null create user else edit user
+    if (values === null) {
+      setValues(defaultValues);
+      // Kullanıcıyı oluştur
+      const postData = async (url: string, data: any) => {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        return response.json();
+      };
+
+      postData('https://6450be73e1f6f1bb229de7cf.mockapi.io/persons', values)
+        .then((data) => {
+          console.log('Success:', data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      window.location.reload();
+    } else {
+      // Kullanıcıyı düzenle
+      const editData = async (url: string, data: any) => {
+        const response = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        return response.json();
+      };
+
+      editData('https://6450be73e1f6f1bb229de7cf.mockapi.io/persons/' + values.id, values)
+        .then((data) => {
+          console.log('Success:', data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      window.location.reload();
     }
-    postData('https://6450be73e1f6f1bb229de7cf.mockapi.io/persons', values)
-      .then((data) => {
-        console.log('Success:', data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
   };
   return (
     <form onSubmit={handleSubmit}>
@@ -140,10 +175,10 @@ export default function Form() {
                 onChange={handleChange}
                 size="small"
               >
-                <MenuItem value="admin">Contributor</MenuItem>
-                <MenuItem value="editor">Author</MenuItem>
-                <MenuItem value="user">Administator</MenuItem>
-                <MenuItem value="user">Subscriber</MenuItem>
+                <MenuItem value="Contributor">Contributor</MenuItem>
+                <MenuItem value="Author">Author</MenuItem>
+                <MenuItem value="Administator">Administator</MenuItem>
+                <MenuItem value="Subscriber">Subscriber</MenuItem>
               </Select>
             </FormControl>
           </Container>

@@ -5,20 +5,10 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import SearchIcon from '@mui/icons-material/Search';
-import {
-  AppBar,
-  Button,
-  Container,
-  Dialog,
-  Grid,
-  IconButton,
-  Input,
-  InputAdornment,
-  TextField,
-} from '@mui/material';
+import { AppBar, Button, Container, Dialog, Grid, TextField } from '@mui/material';
 import icon from '@/public/Users.png';
 import { BsPlusCircleFill } from 'react-icons/bs';
-import { Search } from '@mui/icons-material';
+
 import AllUsers from '../TabViews/AllUsers';
 import Contributor from '../TabViews/Contributor';
 import Author from '../TabViews/Author';
@@ -150,8 +140,8 @@ export default function BasicTabs({ data }: { data: any }) {
           </Grid>
         </Box>
       </AppBar>
-      <Dialog open={dialog}>
-        <DialogForm />
+      <Dialog open={dialog} onClose={() => setDialog(false)}>
+        <DialogForm editValues={null} />
       </Dialog>
       <Container maxWidth="xl" sx={{ paddingY: '1rem' }}>
         <Box sx={{ display: 'flex ', alignItems: 'center', gap: ' 10px ' }}>
