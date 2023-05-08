@@ -16,10 +16,10 @@ import {
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 
-type Role = 'admin' | 'editor' | 'user';
+type Role = 'Contributor' | 'Author' | 'Administator' | 'Subscriber';
 
 interface FormValues {
-  fullName: string;
+  name: string;
   username: string;
   email: string;
   role: Role;
@@ -27,18 +27,20 @@ interface FormValues {
 }
 
 const defaultValues: FormValues = {
-  fullName: '',
+  name: '',
   username: '',
   email: '',
-  role: 'user',
+  role: 'Contributor',
   avatar: '',
 };
 
 const avatars = [
   'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/17.jpg',
-  '/avatar2.png',
-  '/avatar3.png',
-  '/avatar4.png',
+  'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/78.jpg',
+  'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/74.jpg',
+  'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/75.jpg',
+  'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/76.jpg',
+  'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/77.jpg',
 ];
 
 export default function Form() {
@@ -56,27 +58,50 @@ export default function Form() {
     console.log(values);
     setValues(defaultValues);
   };
+
   const [selectedAvatar, setSelectedAvatar] = useState('');
 
   const handleAvatarChange = (event: SelectChangeEvent<string>) => {
     setSelectedAvatar(event.target.value as string);
   };
+  const personSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    console.log(values);
+    values.avatar = selectedAvatar;
+    setValues(defaultValues);
+    async function postData(url = '', data = {}) {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      return response.json();
+    }
+    postData('https://6450be73e1f6f1bb229de7cf.mockapi.io/persons', values)
+      .then((data) => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  };
   return (
     <form onSubmit={handleSubmit}>
-      <Grid container spacing={2}>
+      <Grid container spacing={4} sx={{ mt: 1, width: '356px' }}>
         <Grid item xs={12}>
           <Container>
             <TextField
               label="Full Name"
-              name="fullName"
-              value={values.fullName}
+              name="name"
+              value={values.name}
               onChange={handleChange}
               size="small"
               fullWidth
             />
           </Container>
         </Grid>
-
         <Grid item xs={12}>
           <Container>
             {' '}
@@ -90,7 +115,6 @@ export default function Form() {
             />
           </Container>
         </Grid>
-
         <Grid item xs={12}>
           <Container>
             <TextField
@@ -104,10 +128,8 @@ export default function Form() {
             />
           </Container>
         </Grid>
-
         <Grid item xs={12}>
           <Container>
-            {' '}
             <FormControl fullWidth>
               <InputLabel id="role-label">Role</InputLabel>
               <Select
@@ -118,44 +140,77 @@ export default function Form() {
                 onChange={handleChange}
                 size="small"
               >
-                <MenuItem value="admin">Admin</MenuItem>
-                <MenuItem value="editor">Editor</MenuItem>
-                <MenuItem value="user">User</MenuItem>
+                <MenuItem value="admin">Contributor</MenuItem>
+                <MenuItem value="editor">Author</MenuItem>
+                <MenuItem value="user">Administator</MenuItem>
+                <MenuItem value="user">Subscriber</MenuItem>
               </Select>
             </FormControl>
           </Container>
         </Grid>
         <Grid item xs={12}>
-          <FormControl component="fieldset">
-            <FormLabel component="legend">Avatar Seçin</FormLabel>
-            <RadioGroup name="avatar" value={selectedAvatar} onChange={handleAvatarChange}>
-              {avatars.map((avatar) => (
-                <FormControlLabel
-                  key={avatar}
-                  value={avatar}
-                  control={
-                    <Radio
-                      icon={
-                        <Avatar
-                          sx={{ width: 30, height: 30, borderRadius: '0px' }}
-                          alt={`Avatar ${avatar}`}
-                          src={avatar}
-                        />
-                      }
-                      checkedIcon={
-                        <Avatar
-                          sx={{ width: 30, height: 30, borderRadius: '0px' }}
-                          alt={`Avatar ${avatar}`}
-                          src={avatar}
-                        />
-                      }
-                    />
-                  }
-                  label=""
-                />
-              ))}
-            </RadioGroup>
-          </FormControl>
+          <Container>
+            <FormControl component="fieldset" fullWidth>
+              <FormLabel component="legend">Select Avatar</FormLabel>
+              <RadioGroup
+                name="avatar"
+                value={selectedAvatar}
+                onChange={handleAvatarChange}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}
+              >
+                {avatars.map((avatar) => (
+                  <FormControlLabel
+                    key={avatar}
+                    value={avatar}
+                    sx={{ width: 40, height: 40 }}
+                    control={
+                      <Radio
+                        icon={
+                          <Avatar
+                            alt={`Avatar ${avatar}`}
+                            src={avatar}
+                            sx={{ borderRadius: '5px' }}
+                          />
+                        }
+                        checkedIcon={
+                          <Avatar
+                            sx={{
+                              width: 40,
+                              height: 40,
+                              borderRadius: '5px',
+                              boxShadow: '0 0 0 2px #1976d2',
+                            }}
+                            alt={`Avatar ${avatar}`}
+                            src={avatar}
+                          />
+                        }
+                      />
+                    }
+                    label=""
+                  />
+                ))}
+              </RadioGroup>
+            </FormControl>
+          </Container>
+        </Grid>
+        <Grid item xs={12}>
+          <Container sx={{ textAlign: 'center' }}>
+            <Button
+              type="submit"
+              onClick={personSubmit}
+              variant="contained"
+              sx={{ mb: 2, textTransform: 'capitalize' }}
+              disabled={
+                !values.name || !values.username || !values.email || !values.role || !selectedAvatar
+              }
+            >
+              Create User
+            </Button>
+          </Container>
         </Grid>
       </Grid>
     </form>
