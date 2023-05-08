@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Dialog, Pagination } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { DataGrid, GridColDef, GridFilterModel } from '@mui/x-data-grid';
+import { Box, Dialog, Pagination, TextField } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DialogForm from './DialogForm';
+import SearchIcon from '@mui/icons-material/Search';
 
 const Index = ({ data }: { data: any }) => {
   const [editDialog, setEditDialog] = useState<boolean>(false);
   const [page, setPage] = useState<number>(0);
-  const [pageSize, setPageSize] = useState<number>(5) as any;
+  const [pageSize, setPageSize] = useState<number>(5);
   const [editData, setEditData] = useState<any>();
+  const [paginatedData, setPaginatedData] = useState<any>([]);
   const handleEdit = (id: any) => {
     // Handle edit action heres
     console.log(`Edit row with id ${id}`);
@@ -41,14 +43,18 @@ const Index = ({ data }: { data: any }) => {
         <img src={params.value} alt="Avatar" style={{ width: 50, height: 50 }} />
       ),
     },
-    { field: 'name', headerName: 'Name', width: 130 },
-    { field: 'username', headerName: 'Username', width: 130 },
-    { field: 'email', headerName: 'Email', width: 130 },
-    { field: 'role', headerName: 'Role', width: 130 },
+    {
+      field: 'name',
+      headerName: 'Name',
+      width: 250,
+    },
+    { field: 'username', headerName: 'Username', width: 250 },
+    { field: 'email', headerName: 'Email', width: 250 },
+    { field: 'role', headerName: 'Role', width: 250 },
     {
       field: 'edit',
       headerName: 'Edit',
-      width: 130,
+      width: 250,
       renderCell: (params) => (
         <>
           <EditIcon
@@ -66,14 +72,33 @@ const Index = ({ data }: { data: any }) => {
 
   const startIndex = page * pageSize;
   const endIndex = startIndex + pageSize;
-  const paginatedData = data.slice(startIndex, endIndex);
+  useEffect(() => {
+    setPaginatedData(data.slice(startIndex, endIndex));
+  }, [page, data]);
 
   return (
     <>
+      <Box sx={{ display: 'flex ', alignItems: 'center', gap: ' 10px ' }}>
+        {' '}
+        <SearchIcon />
+        <TextField
+          id="search"
+          variant="standard"
+          type="search"
+          // value={searchTerm}
+          // onChange={handleChange}
+          InputProps={{
+            disableUnderline: true,
+            style: { border: 'none' },
+          }}
+          placeholder="Search"
+        />
+      </Box>
       <DataGrid
         slots={{
           footer: () => (
             <Pagination
+              sx={{ display: 'flex', justifyContent: 'center' }}
               count={Math.ceil(data.length / pageSize)}
               page={page + 1}
               onChange={(_, page) => setPage(page - 1)}

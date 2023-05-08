@@ -4,8 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import SearchIcon from '@mui/icons-material/Search';
-import { AppBar, Button, Container, Dialog, Grid, TextField } from '@mui/material';
+import { AppBar, Button, Container, Dialog, Grid } from '@mui/material';
 import icon from '@/public/Users.png';
 import { BsPlusCircleFill } from 'react-icons/bs';
 
@@ -69,11 +68,6 @@ export default function BasicTabs({ data }: { data: any }) {
     setUsers(data);
   }, []);
   const [value, setValue] = React.useState(0);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-  };
 
   const handletabsChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -144,23 +138,6 @@ export default function BasicTabs({ data }: { data: any }) {
         <DialogForm editValues={null} />
       </Dialog>
       <Container maxWidth="xl" sx={{ paddingY: '1rem' }}>
-        <Box sx={{ display: 'flex ', alignItems: 'center', gap: ' 10px ' }}>
-          {' '}
-          <SearchIcon />
-          <TextField
-            id="search"
-            variant="standard"
-            type="search"
-            value={searchTerm}
-            onChange={handleChange}
-            InputProps={{
-              disableUnderline: true,
-              style: { border: 'none' },
-            }}
-            placeholder="Search"
-          />
-        </Box>
-
         <TabPanel value={value} index={0}>
           <AllUsers data={users} />
         </TabPanel>
