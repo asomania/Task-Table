@@ -11,7 +11,7 @@ import { BsPlusCircleFill } from 'react-icons/bs';
 import AllUsers from '../TabViews/AllUsers';
 import Contributor from '../TabViews/Contributor';
 import Author from '../TabViews/Author';
-import Administator from '../TabViews/Administator';
+import Administrator from '../TabViews/Administrator';
 import Subscriber from '../TabViews/Subscriber';
 import DialogForm from '../TabViews/Components/DialogForm';
 
@@ -30,7 +30,7 @@ type User = {
   role: string;
   email: string;
 };
-const headerData = ['All Users', 'Contributor', 'Author', 'Administator', 'Subscriber'];
+const headerData = ['All Users', 'Contributor', 'Author', 'Administrator', 'Subscriber'];
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -149,7 +149,7 @@ export default function BasicTabs({ data }: { data: any }) {
           <Author data={users} />
         </TabPanel>
         <TabPanel value={value} index={3}>
-          <Administator data={users} />
+          <Administrator data={users} />
         </TabPanel>
         <TabPanel value={value} index={4}>
           <Subscriber data={users} />

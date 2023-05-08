@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 
-type Role = 'Contributor' | 'Author' | 'Administator' | 'Subscriber';
+type Role = 'Contributor' | 'Author' | 'Administrator' | 'Subscriber';
 
 interface FormValues {
   id: number;
@@ -177,7 +177,7 @@ export default function Form({ editValues }: { editValues: any }) {
               >
                 <MenuItem value="Contributor">Contributor</MenuItem>
                 <MenuItem value="Author">Author</MenuItem>
-                <MenuItem value="Administator">Administator</MenuItem>
+                <MenuItem value="Administrator">Administrator</MenuItem>
                 <MenuItem value="Subscriber">Subscriber</MenuItem>
               </Select>
             </FormControl>
