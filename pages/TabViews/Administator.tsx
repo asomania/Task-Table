@@ -1,10 +1,13 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DataGrid from './Components/DataGrid';
-const Administator = ({ data }: { data: any }) => {
-  const [newData, setNewData] = useState();
 
-  setNewData(data.filter((item: any) => item.role === 'Administator'));
+const Administrator = ({ data }: { data: any }) => {
+  const [newData, setNewData] = useState([]);
+
+  useEffect(() => {
+    setNewData(data.filter((item: any) => item.role === 'Administrator'));
+  }, [data]);
+
   return (
     <>
       <DataGrid data={newData} />
@@ -12,4 +15,4 @@ const Administator = ({ data }: { data: any }) => {
   );
 };
 
-export default Administator;
+export default Administrator;

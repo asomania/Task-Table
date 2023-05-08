@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import DataGrid from './Components/DataGrid';
-import { useState } from 'react';
 
 const Contributor = ({ data }: { data: any }) => {
-  const [newData, setNewData] = useState();
-  setNewData(data.filter((item: any) => item.role === 'Contributor'));
+  const [newData, setNewData] = useState([]);
+
+  useEffect(() => {
+    setNewData(data.filter((item: any) => item.role === 'Contributor'));
+  }, [data]);
+
   return (
     <>
       <DataGrid data={newData} />

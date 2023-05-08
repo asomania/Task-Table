@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import DataGrid from './Components/DataGrid';
-import { useState } from 'react';
+
 const Subscriber = ({ data }: { data: any }) => {
-  const [newData, setNewData] = useState();
-  setNewData(data.filter((item: any) => item.role === 'Subscriber'));
+  const [newData, setNewData] = useState([]);
+
+  useEffect(() => {
+    setNewData(data.filter((item: any) => item.role === 'Subscriber'));
+  }, [data]);
+
   return (
     <>
-      <DataGrid data={data} />
+      <DataGrid data={newData} />
     </>
   );
 };
