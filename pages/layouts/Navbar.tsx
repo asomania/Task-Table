@@ -4,7 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { AppBar, Button, Container, Dialog, Grid } from '@mui/material';
+import { AppBar, Button, Container, Dialog, Grid, Menu, MenuItem } from '@mui/material';
 import icon from '@/public/Users.png';
 import { BsPlusCircleFill } from 'react-icons/bs';
 
@@ -62,13 +62,23 @@ function a11yProps(index: number) {
 
 export default function BasicTabs({ data }: { data: any }) {
   const [dialog, setDialog] = useState<boolean>(false);
-
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [users, setUsers] = useState<User[]>([]);
   useEffect(() => {
     setUsers(data);
   }, []);
   const [value, setValue] = React.useState(0);
+  const handleMenuChange = (newValue: number) => {
+    setValue(newValue);
+    handleMenuClose();
+  };
+  const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
   const handletabsChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -101,7 +111,40 @@ export default function BasicTabs({ data }: { data: any }) {
               </Typography>
             </Grid>
             <Grid item xs={8} sx={{ display: 'flex', justifyContent: 'center' }}>
-              <Tabs value={value} onChange={handletabsChange} aria-label="basic tabs example">
+              <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+                <Menu
+                  id="tabs-menu"
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleMenuClose}
+                >
+                  {headerData.map((item, index) => (
+                    <MenuItem key={index} onClick={() => handleMenuChange(index)}>
+                      {item}
+                    </MenuItem>
+                  ))}
+                </Menu>
+                <Button aria-controls="tabs-menu" aria-haspopup="true" onClick={handleMenuOpen}>
+                  <Typography
+                    sx={{
+                      fontSize: '13px',
+                      fontWeight: '600',
+                      textTransform: 'capitalize',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {headerData[value]}
+                  </Typography>
+                </Button>
+              </Box>
+
+              <Tabs
+                value={value}
+                onChange={handletabsChange}
+                aria-label="basic tabs example"
+                sx={{ display: { xs: 'none', md: 'block' } }}
+              >
                 {headerData.map((item, index) => {
                   return <Tab label={item} {...a11yProps(index)} key={index} sx={styles.tab} />;
                 })}
@@ -128,7 +171,26 @@ export default function BasicTabs({ data }: { data: any }) {
                 onClick={() => setDialog(true)}
               >
                 <BsPlusCircleFill />
-                Add New User
+                <Typography
+                  sx={{
+                    fontSize: '13px',
+                    fontWeight: '600',
+                    textTransform: 'capitalize',
+                    display: { xs: 'none', md: 'block' },
+                  }}
+                >
+                  Add New User
+                </Typography>{' '}
+                <Typography
+                  sx={{
+                    fontSize: '13px',
+                    fontWeight: '600',
+                    textTransform: 'capitalize',
+                    display: { xs: 'block', md: 'none' },
+                  }}
+                >
+                  Add
+                </Typography>
               </Button>
             </Grid>
           </Grid>
