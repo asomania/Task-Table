@@ -101,7 +101,6 @@ export default function BasicTabs({ data }: { data: any }) {
               </Typography>
             </Grid>
             <Grid item xs={8} sx={{ display: 'flex', justifyContent: 'center' }}>
-              {' '}
               <Tabs value={value} onChange={handletabsChange} aria-label="basic tabs example">
                 {headerData.map((item, index) => {
                   return <Tab label={item} {...a11yProps(index)} key={index} sx={styles.tab} />;
@@ -120,6 +119,7 @@ export default function BasicTabs({ data }: { data: any }) {
               <Button
                 variant="contained"
                 sx={{
+                  maxHeight: '40px',
                   fontSize: '13px',
                   fontWeight: '600',
                   textTransform: 'capitalize',

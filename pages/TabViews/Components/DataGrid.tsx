@@ -11,6 +11,7 @@ const Index = ({ data }: { data: any }) => {
   const [page, setPage] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(5);
   const [editData, setEditData] = useState<any>();
+  const [filteredData, setFilteredData] = useState<any[]>(data);
   const [paginatedData, setPaginatedData] = useState<any>([]);
   const handleEdit = (id: any) => {
     // Handle edit action heres
@@ -73,13 +74,21 @@ const Index = ({ data }: { data: any }) => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
+    setPage(0);
   };
 
-  const startIndex = page * pageSize;
-  const endIndex = startIndex + pageSize;
   useEffect(() => {
-    setPaginatedData(data.slice(startIndex, endIndex));
-  }, [page, data]);
+    const filtered = data.filter((item: any) =>
+      item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredData(filtered);
+  }, [data, searchTerm]);
+
+  useEffect(() => {
+    const startIndex = page * pageSize;
+    const endIndex = startIndex + pageSize;
+    setPaginatedData(filteredData.slice(startIndex, endIndex));
+  }, [filteredData, page, pageSize]);
 
   return (
     <>
