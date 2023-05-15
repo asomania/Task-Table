@@ -46,7 +46,7 @@ const avatars = [
   'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/77.jpg',
 ];
 
-export default function Form({ editValues }: { editValues: any }) {
+export default function Form({ editValues }: { editValues: FormValues | null }) {
   const [values, setValues] = useState<FormValues>(defaultValues);
   useEffect(() => {
     if (editValues !== null) {
@@ -83,7 +83,7 @@ export default function Form({ editValues }: { editValues: any }) {
     if (values === null) {
       setValues(defaultValues);
       // Kullanıcıyı oluştur
-      const postData = async (url: string, data: any) => {
+      const postData = async (url: string, data: FormValues) => {
         const response = await fetch(url, {
           method: 'POST',
           headers: {

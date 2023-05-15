@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid, GridColDef, GridFilterModel } from '@mui/x-data-grid';
-import { Box, Dialog, Pagination, TextField } from '@mui/material';
+import { Box, Button, Dialog, Pagination, TextField } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DialogForm from './DialogForm';
@@ -13,6 +13,8 @@ const Index = ({ data }: { data: any }) => {
   const [editData, setEditData] = useState<any>();
   const [filteredData, setFilteredData] = useState<any[]>(data);
   const [paginatedData, setPaginatedData] = useState<any>([]);
+  const [selectedRows, setSelectedRows] = React.useState([]);
+
   const handleEdit = (id: any) => {
     // Handle edit action heres
     console.log(`Edit row with id ${id}`);
@@ -33,6 +35,12 @@ const Index = ({ data }: { data: any }) => {
       window.location.reload();
     }
     deleteData();
+  };
+
+  const selectedDelete = () => {
+    selectedRows.map((item: any) => {
+      handleDelete(item.id);
+    });
   };
 
   const columns: GridColDef[] = [
@@ -83,7 +91,6 @@ const Index = ({ data }: { data: any }) => {
     );
     setFilteredData(filtered);
   }, [data, searchTerm]);
-
   useEffect(() => {
     const startIndex = page * pageSize;
     const endIndex = startIndex + pageSize;
@@ -92,21 +99,28 @@ const Index = ({ data }: { data: any }) => {
 
   return (
     <>
-      <Box sx={{ display: 'flex ', alignItems: 'center', gap: ' 10px ' }}>
-        {' '}
-        <SearchIcon />
-        <TextField
-          id="search"
-          variant="standard"
-          type="search"
-          value={searchTerm}
-          onChange={handleChange}
-          InputProps={{
-            disableUnderline: true,
-            style: { border: 'none' },
-          }}
-          placeholder="Search"
-        />
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex ', alignItems: 'center', gap: ' 10px ' }}>
+          {' '}
+          <SearchIcon />
+          <TextField
+            id="search"
+            variant="standard"
+            type="search"
+            value={searchTerm}
+            onChange={handleChange}
+            InputProps={{
+              disableUnderline: true,
+              style: { border: 'none' },
+            }}
+            placeholder="Search"
+          />
+        </Box>
+        <Box>
+          <Button sx={{ color: 'red' }} onClick={selectedDelete}>
+            <DeleteIcon />
+          </Button>
+        </Box>
       </Box>
       <DataGrid
         slots={{
@@ -122,6 +136,11 @@ const Index = ({ data }: { data: any }) => {
         rows={paginatedData}
         columns={columns}
         checkboxSelection
+        onRowSelectionModelChange={(ids: any) => {
+          const selectedIDs = new Set(ids);
+          const selectedRows = data.filter((row: any) => selectedIDs.has(row.id));
+          setSelectedRows(selectedRows);
+        }}
         sx={{ border: 'none' }}
       />
 
