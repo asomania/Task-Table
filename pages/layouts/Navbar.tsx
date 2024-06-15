@@ -221,7 +221,7 @@ export default function BasicTabs({ data }: { data: any }) {
   );
 }
 export async function getServerSideProps() {
-  const response = await fetch('https://6450be73e1f6f1bb229de7cf.mockapi.io/persons');
+  const response = await fetch('https://666d6cb47a3738f7cacc567a.mockapi.io/persons');
   const data = await response.json();
   return {
     props: {

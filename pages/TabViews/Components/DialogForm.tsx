@@ -94,7 +94,7 @@ export default function Form({ editValues }: { editValues: FormValues | null }) 
         return response.json();
       };
 
-      postData('https://6450be73e1f6f1bb229de7cf.mockapi.io/persons', values)
+      postData('https://666d6cb47a3738f7cacc567a.mockapi.io/persons', values)
         .then((data) => {
           console.log('Success:', data);
         })
@@ -115,7 +115,7 @@ export default function Form({ editValues }: { editValues: FormValues | null }) 
         return response.json();
       };
 
-      editData('https://6450be73e1f6f1bb229de7cf.mockapi.io/persons/' + values.id, values)
+      editData('https://666d6cb47a3738f7cacc567a.mockapi.io/persons/' + values.id, values)
         .then((data) => {
           console.log('Success:', data);
         })

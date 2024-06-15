@@ -28,7 +28,7 @@ const Index = ({ data }: { data: any }) => {
     // Handle delete action here
     console.log(`Delete row with id ${id}`);
     async function deleteData() {
-      const response = await fetch(`https://6450be73e1f6f1bb229de7cf.mockapi.io/persons/${id}`, {
+      const response = await fetch(`https://666d6cb47a3738f7cacc567a.mockapi.io/persons/${id}`, {
         method: 'DELETE',
       });
 
